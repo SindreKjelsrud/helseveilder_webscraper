@@ -3,6 +3,8 @@
 
 ## 📝 Info
 
+Denne webscraperen skal hente spørsmål og svar, samt kategorien tilordnet spørsmålet, fra [Studenterspør.no](https://studenterspor.no/). Dette vil bli brukt i våres Bachelor-prosjekt.
+
 ## 📋 Forutsetninger
 
 ## 🛠️ Hvordan kjøre lokalt

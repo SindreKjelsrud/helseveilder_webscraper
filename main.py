@@ -66,23 +66,36 @@ def fetch_all_info(url):
     cleaned_signature = re.sub(r'(Vennlig hilsen|Med vennlig hilsen|Mvh|Lykke til!)\s*', '', signature, flags=re.IGNORECASE)
     cleaned_signature = re.sub(r'^[\s,]*', '', cleaned_signature).strip()  # Remove leading commas and spaces
     
+    # Extracting the additional metadata for gender and date
+    metadata_div = html.css_first('div.pt-5.font-serif.text-light')
+    if metadata_div:
+        metadata_text = metadata_div.text(deep=True).strip()
+        # Split the text to isolate gender and date
+        parts = metadata_text.split('.')
+        # Assuming gender and age are separated by a space and age is always a number
+        gender_age = parts[0].split()
+        gender = ' '.join([word for word in gender_age if not word.isdigit()]).strip()  # Remove the age part
+        date = parts[1].strip() if len(parts) > 1 else "Date not found"
+        metadata = gender + ", " + date
+    else:
+        metadata = "Metadata not found", "Metadata not found"
+
     # Create array of results
-    result = [questions, answers, cleaned_signature]
+    result = [questions, answers, cleaned_signature, metadata]
 
     return result
 
 studenterspor_url = "https://www.studenterspor.no/ajax_handler.php"
 question_urls = fetch_question_url(studenterspor_url)
 
-# Open a new CSV file to write the data
 with open('studenterspor.csv', mode='w', newline='', encoding='utf-8') as file:
     writer = csv.writer(file)
     # Write the header
-    writer.writerow(['Question', 'Answer', 'Signature'])
+    writer.writerow(['Question', 'Answer', 'Signature', 'Metadata'])
 
     # Fetch info for each URL and write it to the CSV file
     for url in question_urls:
         info = fetch_all_info(url)
-        writer.writerow(info)  # Write the question, answer, and signature as a new row
+        writer.writerow(info)  # Write the question, answer, signature and metadata as a new row
 
 print("Done! Your data is now in 'studenterspor.csv'")

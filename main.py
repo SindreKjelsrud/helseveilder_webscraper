@@ -46,11 +46,11 @@ def fetch_all_info(url):
     response = httpx.get(url, headers=headers)
     html = HTMLParser(response.text)
 
-    # Extracting the question "sporsmal"
-    sporsmal = html.css_first('div.article-text').text()
+    # Extracting the question
+    questions = html.css_first('div.article-text').text()
     
-    # Extracting the answer "svar" and the signature "signature"
-    svar = ""
+    # Extracting the answer and the signature
+    answers = ""
     signature = ""
     specific_div = html.css_first('.article-text.font-serif.text-base.py-10')
     if specific_div:
@@ -61,16 +61,16 @@ def fetch_all_info(url):
         signature_match = re.search(r'(Vennlig hilsen|Med vennlig hilsen|Mvh|Lykke til!)\s*(.*)', full_text, re.IGNORECASE)
         if signature_match:
             signature = signature_match.group(2)  # This is the signature text
-            svar = full_text[:signature_match.start()]  # This is the text before the signature
+            answers = full_text[:signature_match.start()]  # This is the text before the signature
         else:
-            svar = full_text  # In case there is no signature
+            answers = full_text  # In case there is no signature
 
     # Clean up the signature
     cleaned_signature = re.sub(r'(Vennlig hilsen|Med vennlig hilsen|Mvh|Lykke til!)\s*', '', signature, flags=re.IGNORECASE)
     cleaned_signature = re.sub(r'^[\s,]*', '', cleaned_signature).strip()  # Remove leading commas and spaces
     
     # Create array of results
-    result = [sporsmal, svar, cleaned_signature]
+    result = [questions, answers, cleaned_signature]
 
     return result
 

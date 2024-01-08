@@ -1,6 +1,7 @@
 import httpx
 from selectolax.parser import HTMLParser
 import re
+import csv
 
 def fetch_question_url(url):
     # Define headers
@@ -15,7 +16,7 @@ def fetch_question_url(url):
         "list": "frequently_asked_questions",
         "idCategory": "8288",  # Id for category
         "from": "0",
-        "size": "10",  # Adjust this to get more results
+        "size": "100",  # Adjust this to get more results
         "gender": "false",
         "age": "false",
         "zone": "default",
@@ -77,5 +78,15 @@ def fetch_all_info(url):
 studenterspor_url = "https://www.studenterspor.no/ajax_handler.php"
 question_urls = fetch_question_url(studenterspor_url)
 
-for url in question_urls:
-    print(fetch_all_info(url))
+# Open a new CSV file to write the data
+with open('studenterspor.csv', mode='w', newline='', encoding='utf-8') as file:
+    writer = csv.writer(file)
+    # Write the header
+    writer.writerow(['Question', 'Answer', 'Signature'])
+
+    # Fetch info for each URL and write it to the CSV file
+    for url in question_urls:
+        info = fetch_all_info(url)
+        writer.writerow(info)  # Write the question, answer, and signature as a new row
+
+print("Done! Your data is now in 'studenterspor.csv'")

@@ -9,7 +9,7 @@ This webscraper will retrieve questions and answers, as well as the category ass
 
 - Python 3.x
 - HTTPX
-- json
+- HTMLParser (from `selectolax.parser`)
 
 ## 🛠️ How to run locally
 

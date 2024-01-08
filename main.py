@@ -1,5 +1,5 @@
 import httpx
-import json
+from selectolax.parser import HTMLParser
 
 def fetch_question_url(url):
     # Define headers
@@ -36,9 +36,25 @@ def fetch_question_url(url):
     else:
         print(f"Failed to fetch data: {response.status_code}")
 
+def fetch_all_info(url):
+    # Define headers
+    headers = {
+            "User-Agent":"Mozilla/5.0 (X11; Linux x86_64; rv:121.0) Gecko/20100101 Firefox/121.0"
+    }
+
+    response = httpx.get(url, headers=headers)
+    html = HTMLParser(response.text)
+
+    # Extracting the question and answer
+    sporsmal = html.css_first('div.article-text').text()
+    
+    # Create array of results
+    #result = [sporsmal, svar, signatur]
+
+    return sporsmal
+
 studenterspor_url = "https://www.studenterspor.no/ajax_handler.php"
 urls = fetch_question_url(studenterspor_url)
 
-if urls:
-    for url in urls:
-        print(url)
+for url in urls:
+    print(fetch_all_info(url))

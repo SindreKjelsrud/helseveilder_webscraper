@@ -14,5 +14,7 @@ This webscraper will retrieve questions and answers, as well as the category ass
 
 ## 🛠️ How to run locally
 
-```
-```
+1. Create Python environment: `python -m venv venv`
+2. Activate environment: `source venv/bin/activate`
+3. Install requirements: `pip install -r requirements.txt`
+4. Run ***main.py*** to get a csv.file: `python main.py`

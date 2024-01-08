@@ -48,10 +48,25 @@ def fetch_all_info(url):
     # Extracting the question and answer
     sporsmal = html.css_first('div.article-text').text()
     
+    # Check if the element exists before accessing its text
+    signatur_div = html.css_first('div.signatur')
+    signatur = ""
+    if signatur_div:
+        signaturTxt = signatur_div.text()
+        # Remove "Med vennlig hilsen" or "Vennlig hilsen"
+        signaturTxt = signaturTxt.replace("Med vennlig hilsen", "").replace("Vennlig hilsen", "").strip()
+        # Check if the text is empty after removal
+        if signaturTxt:
+            signatur = signaturTxt
+        else:
+            signatur = "Null signatur"
+    else:
+        signatur = "Null signatur"
+    
     # Create array of results
     #result = [sporsmal, svar, signatur]
 
-    return sporsmal
+    return signatur
 
 studenterspor_url = "https://www.studenterspor.no/ajax_handler.php"
 urls = fetch_question_url(studenterspor_url)

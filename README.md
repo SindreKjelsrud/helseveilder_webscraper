@@ -7,9 +7,10 @@ This webscraper will retrieve questions and answers, as well as the category ass
 
 ## 📋 Prerequisites
 
-- Python 3.x
-- HTTPX
-- HTMLParser (from `selectolax.parser`)
+- ***Python 3.x***
+- ***httpx*** ~ HTTP client
+- ***HTMLParser*** (from [`selectolax.parser`](https://github.com/rushter/selectolax/)) ~ a fast HTML5 parser with CSS selectors
+- ***re*** ~ regular expression matching operations
 
 ## 🛠️ How to run locally
 

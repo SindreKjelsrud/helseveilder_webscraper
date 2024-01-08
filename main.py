@@ -69,7 +69,7 @@ def fetch_all_info(url):
     return signatur
 
 studenterspor_url = "https://www.studenterspor.no/ajax_handler.php"
-urls = fetch_question_url(studenterspor_url)
+question_urls = fetch_question_url(studenterspor_url)
 
-for url in urls:
+for url in question_urls:
     print(fetch_all_info(url))

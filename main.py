@@ -2,13 +2,11 @@ import httpx
 from selectolax.parser import HTMLParser
 import re
 import csv
+import config
 
 def fetch_question_url(url):
     # Define headers
-    headers = {
-            "User-Agent":"Mozilla/5.0 (X11; Linux x86_64; rv:121.0) Gecko/20100101 Firefox/121.0"
-    }
-
+    headers = config.headers
     # Define the parameters for the request
     params = {
         "action": "get-faqs",
@@ -40,9 +38,7 @@ def fetch_question_url(url):
 
 def fetch_all_info(url):
     # Define headers
-    headers = {
-            "User-Agent":"Mozilla/5.0 (X11; Linux x86_64; rv:121.0) Gecko/20100101 Firefox/121.0"
-    }
+    headers = config.headers
 
     response = httpx.get(url, headers=headers)
     html = HTMLParser(response.text)

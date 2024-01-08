@@ -1,10 +1,17 @@
-# Webscraper for [Helseveileder](https://github.com/haraldnilsen/helseveileder)
-> Del av Bachelor-prosjekt V2024
+# Webscraper needed for [Helseveileder](https://github.com/haraldnilsen/helseveileder)
+> Part of Bachelor-project V2024
 
 ## 📝 Info
 
-Denne webscraperen skal hente spørsmål og svar, samt kategorien tilordnet spørsmålet, fra [Studenterspør.no](https://studenterspor.no/). Dette vil bli brukt i våres Bachelor-prosjekt.
+This webscraper will retrieve questions and answers, as well as the category assigned to the question, from [Studenterspør.no](https://studenterspor.no/). This will be used in our Bachelor project.
 
-## 📋 Forutsetninger
+## 📋 Prerequisites
 
-## 🛠️ Hvordan kjøre lokalt
+- Python 3.x
+- HTTPX
+- json
+
+## 🛠️ How to run locally
+
+```
+```

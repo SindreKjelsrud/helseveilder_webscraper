@@ -1,5 +1,6 @@
 import httpx
 from selectolax.parser import HTMLParser
+import re
 
 def fetch_question_url(url):
     # Define headers
@@ -45,28 +46,33 @@ def fetch_all_info(url):
     response = httpx.get(url, headers=headers)
     html = HTMLParser(response.text)
 
-    # Extracting the question and answer
+    # Extracting the question "sporsmal"
     sporsmal = html.css_first('div.article-text').text()
     
-    # Check if the element exists before accessing its text
-    signatur_div = html.css_first('div.signatur')
-    signatur = ""
-    if signatur_div:
-        signaturTxt = signatur_div.text()
-        # Remove "Med vennlig hilsen" or "Vennlig hilsen"
-        signaturTxt = signaturTxt.replace("Med vennlig hilsen", "").replace("Vennlig hilsen", "").strip()
-        # Check if the text is empty after removal
-        if signaturTxt:
-            signatur = signaturTxt
+    # Extracting the answer "svar" and the signature "signature"
+    svar = ""
+    signature = ""
+    specific_div = html.css_first('.article-text.font-serif.text-base.py-10')
+    if specific_div:
+        p_elements = specific_div.css('p')
+        full_text = ' '.join([p.text() for p in p_elements])
+
+        # Separate the signature using a regular expression
+        signature_match = re.search(r'(Vennlig hilsen|Med vennlig hilsen|Mvh|Lykke til!)\s*(.*)', full_text, re.IGNORECASE)
+        if signature_match:
+            signature = signature_match.group(2)  # This is the signature text
+            svar = full_text[:signature_match.start()]  # This is the text before the signature
         else:
-            signatur = "Null signatur"
-    else:
-        signatur = "Null signatur"
+            svar = full_text  # In case there is no signature
+
+    # Clean up the signature
+    cleaned_signature = re.sub(r'(Vennlig hilsen|Med vennlig hilsen|Mvh|Lykke til!)\s*', '', signature, flags=re.IGNORECASE)
+    cleaned_signature = re.sub(r'^[\s,]*', '', cleaned_signature).strip()  # Remove leading commas and spaces
     
     # Create array of results
-    #result = [sporsmal, svar, signatur]
+    result = [sporsmal, svar, cleaned_signature]
 
-    return signatur
+    return result
 
 studenterspor_url = "https://www.studenterspor.no/ajax_handler.php"
 question_urls = fetch_question_url(studenterspor_url)
